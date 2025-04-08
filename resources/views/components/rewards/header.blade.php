@@ -53,12 +53,12 @@
                         </div>
                      @else
                         <a href="{{ route('login') }}" class="btn btn-outline-primary text-light">
-                           Log in
+                           {{__('header.login')}}
                         </a>
 
                         @if (Route::has('register'))
                            <a href="{{ route('register') }}" class="btn btn-outline-primary text-light">
-                              Register
+                              {{__('header.register')}}
                            </a>
                         @endif
                      @endauth

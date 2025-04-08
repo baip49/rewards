@@ -1,8 +1,8 @@
-<div class="container-fluid" style="background-color: #003070;">
+<div class="container-fluid">
    <footer class="py-3 mt-4">
 
       <div
-         class="container-fluid d-flex justify-content-between align-items-center border-bottom border-light pb-3 mb-2">
+         class="container d-flex justify-content-between align-items-center border-bottom border-light pb-3 mb-2">
          <a href="{{ route('home') }}"
             class="d-flex align-items-center justify-content-evenly link-body-emphasis text-decoration-none">
             <img src="{{ asset('images/unach-logo.png') }}" class="w-25 h-auto" alt="UNACH Rewards">

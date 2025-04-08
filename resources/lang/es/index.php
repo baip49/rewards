@@ -11,7 +11,7 @@ return [
     'login-btn' => 'Iniciar sesión',
     'already-logged' => '¡Ya iniciaste sesión!',
     // Panel card
-    'panel-title' => 'Ver panel',
+    'panel-title' => 'Panel',
     'panel-desc' => 'Accede a tu panel de usuario para ver tus puntos, canjear premios y más',
     'panel-btn' => 'Ver panel',
     // Points card
