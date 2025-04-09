@@ -1,4 +1,6 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+@import '../../vendor/livewire/flux/dist/flux.css';
+@fluxAppearance
 
 @import '../../vendor/livewire/flux/dist/flux.css';
 

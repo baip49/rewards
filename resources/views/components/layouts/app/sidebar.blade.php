@@ -15,7 +15,7 @@
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('sidebar.dashboard') }}</flux:navlist.item>
                     <flux:navlist.item icon="gift" :href="route('rewards')" :current="request()->routeIs('rewards')" wire:navigate>{{ __('sidebar.rewards') }}</flux:navlist.item>
-                    <flux:navlist.item icon="circle-stack" :href="route('points')" :current="request()->routeIs('points')" wire:navigate>{{ __('sidebar.points') }}</flux:navlist.item>
+                    <flux:navlist.item icon="circle-stack" :href="route('progress')" :current="request()->routeIs('progress')" wire:navigate>{{ __('sidebar.progress') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
@@ -36,8 +36,8 @@
                 <flux:profile
                     :name="auth()->user()->name"
                     :initials="auth()->user()->initials()"
-                    icon-trailing="chevrons-up-down"
-                />
+                    icon-trailing="chevrons-up-down">
+            </flux:profile>
 
                 <flux:menu class="w-[220px]">
                     <flux:menu.radio.group>

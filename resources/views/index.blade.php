@@ -65,7 +65,7 @@
                   <p class="card-text">{{ __('index.points-desc') }}
                   </p>
                   @if (auth()->check())
-                     <a href="{{ route('points') }}" class="btn btn-outline-info">{{ __('index.points-btn') }}</a>
+                     <a href="{{ route('progress') }}" class="btn btn-outline-info">{{ __('index.points-btn') }}</a>
                   @else
                      <a href="{{ route('login') }}" class="btn btn-outline-info">{{ __('index.points-btn') }}</a>
                   @endif

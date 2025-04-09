@@ -12,7 +12,7 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
     Route::view('rewards', 'rewards')->name('rewards');
-    Route::view('points', 'points')->name('points');
+    Route::view('progress', 'progress')->name('progress');
 });
 
 Route::middleware(['auth'])->group(function () {

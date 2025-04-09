@@ -58,6 +58,19 @@ class User extends Authenticatable
             ->implode('');
     }
 
+    /**
+     * Get the translated role.
+     *
+     * @return string
+     */
+    public function getRoleAttribute($value): string
+    {
+        return $value === 'admin'
+            ? __('user.admin')
+            : __('user.student');
+    }
+
+
     public function isAdmin()
     {
         return $this->role === 'admin';

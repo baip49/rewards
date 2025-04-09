@@ -17,5 +17,5 @@ return [
     // Points card
     'points-title' => 'Gana puntos',
     'points-desc' => 'Acumula puntos y canjéalos por mercancía UNACH, sorteos y mucho más ',
-    'points-btn' => 'Ver mis puntos',
+    'points-btn' => 'Ver mi progreso',
 ];

@@ -2,5 +2,5 @@
 return [
     'dashboard' => 'Tablero',
     'rewards' => 'Recompensas',
-    'points' => 'Mis puntos',
+    'points' => 'Mi progreso',
 ];
