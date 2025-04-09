@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('profile_photo_url')->nullable();
             $table->enum('role', ['alumno','admin'])->default('alumno');
+            $table->unsignedBigInteger('points')->default(0);
+            $table->unsignedBigInteger('spent_points')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
