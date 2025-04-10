@@ -8,7 +8,7 @@
                <flux:heading size="xl">{{ __('rewards.heading') }}</flux:heading>
                <flux:text>{{ __('rewards.text') }}</flux:text>
             </div>
-            <div class="grid grid-cols-3 gap-5 mb-6">
+            <div class="grid grid-cols-3 gap-5 mb-6 mx-6">
                <x-rewards.reward-card title="Spotify" description="Tarjeta prepago de Spotify $200" cost="5000"
                   stock="10" points="{{ auth()->user()->points }}" />
                <x-rewards.reward-card title="Netflix" description="Tarjeta prepago de Netflix $300" cost="7000"
