@@ -13,6 +13,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
     Route::view('rewards', 'rewards')->name('rewards');
     Route::view('progress', 'progress')->name('progress');
+    Route::view('users','users')->name('users');
 });
 
 Route::middleware(['auth'])->group(function () {
