@@ -19,6 +19,7 @@
                 </flux:navlist.group>
 
                 <flux:navlist.group :heading="__('Admin')" class="grid">
+                    <flux:navlist.item icon="user-group" :href="route('rewadmin')" :current="request()->routeIs('rewadmin')" wire:navigate>{{ __('sidebar.rewadmin') }}</flux:navlist.item>
                     <flux:navlist.item icon="user-group" :href="route('users')" :current="request()->routeIs('users')" wire:navigate>{{ __('sidebar.users') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
