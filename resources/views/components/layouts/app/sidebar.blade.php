@@ -12,13 +12,13 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
+                <flux:navlist.group :heading="__('sidebar.platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('sidebar.dashboard') }}</flux:navlist.item>
                     <flux:navlist.item icon="gift" :href="route('rewards')" :current="request()->routeIs('rewards')" wire:navigate>{{ __('sidebar.rewards') }}</flux:navlist.item>
                     <flux:navlist.item icon="circle-stack" :href="route('progress')" :current="request()->routeIs('progress')" wire:navigate>{{ __('sidebar.progress') }}</flux:navlist.item>
                 </flux:navlist.group>
 
-                <flux:navlist.group :heading="__('Admin')" class="grid">
+                <flux:navlist.group :heading="__('sidebar.admin')" class="grid">
                     <flux:navlist.item icon="user-group" :href="route('rewadmin')" :current="request()->routeIs('rewadmin')" wire:navigate>{{ __('sidebar.rewadmin') }}</flux:navlist.item>
                     <flux:navlist.item icon="user-group" :href="route('users')" :current="request()->routeIs('users')" wire:navigate>{{ __('sidebar.users') }}</flux:navlist.item>
                 </flux:navlist.group>
@@ -67,7 +67,7 @@
                     <flux:menu.separator />
 
                     <flux:menu.radio.group>
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}</flux:menu.item>
+                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('sidebar.settings') }}</flux:menu.item>
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
@@ -75,7 +75,7 @@
                     <form method="POST" action="{{ route('logout') }}" class="w-full">
                         @csrf
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
+                            {{ __('sidebar.logout') }}
                         </flux:menu.item>
                     </form>
                 </flux:menu>
