@@ -26,22 +26,22 @@ class ProfileUpdateTest extends TestCase
         $this->actingAs($user);
 
         $response = Livewire::test(Profile::class)
-            ->set('name', 'Test User')
-            ->set('email', 'test@example.com')
+            ->set('name', 'Test User 2')
+            ->set('email', 'test2@unach.mx')
             ->call('updateProfileInformation');
 
         $response->assertHasNoErrors();
 
         $user->refresh();
 
-        $this->assertEquals('Test User', $user->name);
-        $this->assertEquals('test@example.com', $user->email);
+        $this->assertEquals('Test User 2', $user->name);
+        $this->assertEquals('test2@unach.mx', $user->email);
         $this->assertNull($user->email_verified_at);
     }
 
     public function test_email_verification_status_is_unchanged_when_email_address_is_unchanged(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['email' => 'test@unach.mx']);
 
         $this->actingAs($user);
 
