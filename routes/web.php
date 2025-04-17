@@ -19,6 +19,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('users', [userController::class, 'index'])->name('users');
     Route::post('users/{user}/update-points', [UserController::class, 'updatePoints'])->name('users.update-points');
     //users by rich
+    Route::view('rewadmin', 'rewadmin')->name('rewadmin');
 });
 
 Route::middleware(['auth'])->group(function () {

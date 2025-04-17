@@ -2,5 +2,7 @@
 return [
     'dashboard' => 'Tablero',
     'rewards' => 'Recompensas',
-    'points' => 'Mi progreso',
+    'progress' => 'Mi progreso',
+    'rewadmin' => 'Administrar premios',
+    'users' => 'Usuarios',
 ];
