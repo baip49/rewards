@@ -4,6 +4,7 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('index');
@@ -13,7 +14,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
     Route::view('rewards', 'rewards')->name('rewards');
     Route::view('progress', 'progress')->name('progress');
-    Route::view('users','users')->name('users');
+    // Route::view('users','users')->name('users');
+    //users by rich
+    Route::get('users', [userController::class, 'index'])->name('users');
+    Route::post('users/{user}/update-points', [UserController::class, 'updatePoints'])->name('users.update-points');
+    //users by rich
 });
 
 Route::middleware(['auth'])->group(function () {

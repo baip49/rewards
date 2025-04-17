@@ -4,4 +4,5 @@ return [
     'rewards' => 'Recompensas',
     'progress' => 'Mi progreso',
     'users' => 'Usuarios',
+    'view' => 'Revisar',
 ];
