@@ -17,11 +17,12 @@
                     <flux:navlist.item icon="gift" :href="route('rewards')" :current="request()->routeIs('rewards')" wire:navigate>{{ __('sidebar.rewards') }}</flux:navlist.item>
                     <flux:navlist.item icon="circle-stack" :href="route('progress')" :current="request()->routeIs('progress')" wire:navigate>{{ __('sidebar.progress') }}</flux:navlist.item>
                 </flux:navlist.group>
-
-                <flux:navlist.group :heading="__('sidebar.admin')" class="grid">
-                    <flux:navlist.item icon="user-group" :href="route('rewadmin')" :current="request()->routeIs('rewadmin')" wire:navigate>{{ __('sidebar.rewadmin') }}</flux:navlist.item>
-                    <flux:navlist.item icon="user-group" :href="route('users')" :current="request()->routeIs('users')" wire:navigate>{{ __('sidebar.users') }}</flux:navlist.item>
-                </flux:navlist.group>
+                @can('isAdmin', App\Models\User::class)
+                    <flux:navlist.group :heading="__('sidebar.admin')" class="grid">
+                        <flux:navlist.item icon="user-group" :href="route('rewadmin')" :current="request()->routeIs('rewadmin')" wire:navigate>{{ __('sidebar.rewadmin') }}</flux:navlist.item>
+                        <flux:navlist.item icon="user-group" :href="route('users')" :current="request()->routeIs('users')" wire:navigate>{{ __('sidebar.users') }}</flux:navlist.item>
+                    </flux:navlist.group>
+                @endcan
             </flux:navlist>
 
             <flux:spacer />
