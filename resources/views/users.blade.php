@@ -7,8 +7,6 @@
 
                <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 mb-6 mx-6">
 
-
-
                   @foreach ($users as $user)
                      <div
                         class="bg-white dark:bg-white/10 border border-zinc-200 dark:border-white/10 p-6 rounded-xl space-y-6 shadow-lg mb-3">
@@ -21,76 +19,89 @@
                               id="spent-{{ $user->id }}">{{ $user->spent_points }}</span></flux:text>
 
                         <button onclick="openModal({{ $user->id }})"
-                           class="px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 duration-100 ease-in-out hover:shadow-xl cursor-pointer">
+                           class="px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 duration-100 ease-in-out hover:shadow-xl cursor-pointer flex items-center gap-2">
+                           <flux:icon.pencil />
                            {{ __('users.edit') }}
                         </button>
                      </div>
 
                      <!-- Modal -->
-                     <!-- Modal -->
                      <div id="modal-{{ $user->id }}"
                         class="fixed inset-0 z-50 hidden bg-black/75 flex items-center justify-center">
                         <div
-                           class="bg-zinc-600 dark:bg-zinc-900 border border-zinc-200 dark:border-white/20 p-6 rounded-xl space-y-6 shadow-lg mb-3 w-100">
+                           class="bg-zinc-600 dark:bg-zinc-900 border border-zinc-200 dark:border-white/20 p-8 rounded-xl space-y-6 shadow-lg mb-3 min-w-[65%] min-h-auto">
                            <flux:fieldset class="space-y-3">
-                              <flux:legend class="text-xl">{{ __('users.editing') . ' ' . $user->name }}</flux:legend>
+                              <div class="flex justify-between items-center">
+                                 <flux:legend class="text-xl">{{ __('users.editing') . ' ' . $user->name }}</flux:legend>
+                                 <button onclick="closeModal({{ $user->id }})"
+                                    class="p-2 bg-red-400 text-white rounded-lg hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 duration-100 ease-in-out hover:shadow-xl cursor-pointer">
+                                    <flux:icon.x-mark />
+                                 </button>
+                              </div>
+                              <form action="{{ route('users.update', $user->id) }}" method="post" class="space-y-3">
+                                 @csrf
+                                 @method('PUT')
+                                 <flux:field>
+                                    <flux:label>{{ __('users.name') }}</flux:label>
 
-                              <flux:field>
-                                 <flux:label>{{ __('users.name') }}</flux:label>
+                                    <flux:input wire:model="text" type="text" name="name"
+                                       id="name-{{ $user->id }}" value="{{ $user->name }}" />
 
-                                 <flux:input wire:model="text" type="text" id="name-{{ $user->id }}"
-                                    value="{{ $user->name }}" required />
+                                    <flux:error name="name" />
+                                 </flux:field>
 
-                                 <flux:error name="name" />
-                              </flux:field>
+                                 <flux:field>
+                                    <flux:select label="{{ __('users.role') }}" name="role"
+                                       id="role-{{ $user->id }}">
+                                       <option value="admin" @if ($user->role === 'Administrador') selected @endif>
+                                          {{ __('users.admin') }}
+                                       </option>
+                                       <option value="alumno" @if ($user->role === 'Alumno') selected @endif>
+                                          {{ __('users.student') }}
+                                       </option>
+                                    </flux:select>
+                                 </flux:field>
 
-                              <flux:field>
-                                 <flux:select label="{{ __('users.role') }}" id="role-{{ $user->id }}" required>
-                                    <option value="Administrador" @if ($user->role === 'Administrador') selected @endif>
-                                       {{ __('users.admin') }}
-                                    </option>
-                                    <option value="Alumno" @if ($user->role === 'Alumno') selected @endif>
-                                       {{ __('users.student') }}
-                                    </option>
-                                 </flux:select>
+                                 <flux:field>
+                                    <flux:label>{{ __('users.disponible_points') }}</flux:label>
 
-                                 <flux:error name="role" />
-                              </flux:field>
+                                    <flux:input wire:model="number" type="number" name="points"
+                                       id="points-{{ $user->id }}" value="{{ $user->points }}" />
 
-                              <flux:field>
-                                 <flux:label>{{ __('users.disponible_points') }}</flux:label>
+                                    <flux:error name="points" />
+                                 </flux:field>
 
-                                 <flux:input wire:model="number" type="number" id="points-{{ $user->id }}"
-                                    value="{{ $user->points }}" required />
+                                 <flux:field>
+                                    <flux:label>{{ __('users.spent_points') }}</flux:label>
 
-                                 <flux:error name="points" />
-                              </flux:field>
+                                    <flux:input wire:model="number" type="number" name="spent_points"
+                                       id="points-{{ $user->id }}" value="{{ $user->spent_points }}"
+                                       min="0" />
 
-                              <flux:field>
-                                 <flux:label>{{ __('users.spent_points') }}</flux:label>
+                                    <flux:error name="spent-points" />
+                                 </flux:field>
 
-                                 <flux:input wire:model="number" type="number" id="points-{{ $user->id }}"
-                                    value="{{ $user->spent_points }}" min="0" required />
 
-                                 <flux:error name="spent-points" />
-                              </flux:field>
 
+                                 <div class="mt-6 flex justify-end space-x-3">
+                                    <button type="submit"
+                                       class="px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 duration-100 ease-in-out hover:shadow-xl cursor-pointer flex items-center gap-2">
+                                       <flux:icon.check />
+                                       {{ __('users.save') }}
+                                    </button>
+                                 </div>
+                              </form>
                            </flux:fieldset>
-
-                           <div class="mt-6 flex justify-end space-x-3">
-                              <button onclick="closeModal({{ $user->id }})"
-                                 class="px-4 py-2 bg-red-400 text-white rounded-lg hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 duration-100 ease-in-out hover:shadow-xl cursor-pointer">
-                                 Cerrar
-                              </button>
-                              <button onclick="updatePoints({{ $user->id }})"
-                                 class="px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 duration-100 ease-in-out hover:shadow-xl cursor-pointer">
-                                 {{ __('users.save') }}
-                              </button>
-                           </div>
                         </div>
                      </div>
+                     <!-- Modal -->
                   @endforeach
                </div>
+            </div>
+            <div id="toast"
+               class="fixed bottom-15 right-15 px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 duration-100 ease-in-out hover:shadow-xl cursor-pointer flex items-center gap-2">
+               <span id="toast-icon"></span>
+               <p id="toast-message"></p>
             </div>
          @endcan
       </div>
@@ -105,4 +116,33 @@
    function closeModal(userId) {
       document.getElementById('modal-' + userId).classList.add('hidden');
    }
+</script>
+
+<script>
+   function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+      const toastIcon = document.getElementById('toast-icon');
+
+      toastMessage.textContent = message;
+      toast.classList.remove('bg-green-700', 'bg-red-700');
+      toast.classList.add(type === 'success' ? 'bg-green-700' : 'bg-red-700');
+
+      toastIcon.innerHTML = type === 'success' ?
+         `<flux:icon.check-circle />` :
+         `<flux:icon.x-circle" />`;
+
+      setTimeout(() => {
+         toast.classList.add('show');
+      }, 500);
+      setTimeout(() => {
+         toast.classList.remove('show');
+      }, 5000);
+   }
+
+   @if (session('success'))
+      showToast("{{ session('success') }}", 'success');
+   @elseif (session('error'))
+      showToast("{{ session('error') }}", 'error');
+   @endif
 </script>

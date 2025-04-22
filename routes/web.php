@@ -18,7 +18,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'can:isAdmin,App\Models\User'])->group(function () {
     Route::get('users', [UserController::class, 'index'])->name('users');
-    Route::post('users/{user}/update-points', [UserController::class, 'updatePoints'])->name('users.update-points');
+    Route::put('users/update/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::post('users/delete/{user}', [UserController::class, 'update'])->name('users.delete');
     Route::view('rewadmin', 'rewadmin')->name('rewadmin');
 });
 
