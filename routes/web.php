@@ -20,8 +20,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('users/{user}/update-points', [UserController::class, 'updatePoints'])->name('users.update-points');
     //users by rich
     Route::view('rewadmin', 'rewadmin')->name('rewadmin');
-    Route::get('/rewards/{id}/edit', [RewardController::class, 'edit'])->name('rewards.edit');
-    Route::put('/rewards/{id}', [RewardController::class, 'update'])->name('rewards.update');
 });
 
 Route::middleware(['auth'])->group(function () {
