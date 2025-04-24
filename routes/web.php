@@ -21,6 +21,8 @@ Route::middleware(['auth', 'can:isAdmin,App\Models\User'])->group(function () {
     Route::put('users/update/{user}', [UserController::class, 'update'])->name('users.update');
     Route::post('users/delete/{user}', [UserController::class, 'update'])->name('users.delete');
     Route::view('rewadmin', 'rewadmin')->name('rewadmin');
+    Route::get('/rewards/{id}/edit', [RewardController::class, 'edit'])->name('rewards.edit');
+    Route::put('/rewards/{id}', [RewardController::class, 'update'])->name('rewards.update');
 });
 
 Route::middleware(['auth'])->group(function () {
