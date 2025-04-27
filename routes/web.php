@@ -14,11 +14,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
     Route::view('rewards', 'rewards')->name('rewards');
     Route::view('progress', 'progress')->name('progress');
-    // Route::view('users','users')->name('users');
-    //users by rich
-    Route::get('users', [userController::class, 'index'])->name('users');
-    Route::post('users/{user}/update-points', [UserController::class, 'updatePoints'])->name('users.update-points');
-    //users by rich
+});
+
+Route::middleware(['auth', 'can:isAdmin,App\Models\User'])->group(function () {
+    Route::get('users', [UserController::class, 'index'])->name('users');
+    Route::put('users/update/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::post('users/delete/{user}', [UserController::class, 'update'])->name('users.delete');
     Route::view('rewadmin', 'rewadmin')->name('rewadmin');
 });
 
@@ -30,4 +31,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 });
 
-require __DIR__.'/auth.php';
+Route::fallback(function () {
+    return redirect()->route('index');
+});
+
+require __DIR__ . '/auth.php';

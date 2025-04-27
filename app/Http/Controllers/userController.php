@@ -13,32 +13,32 @@ class UserController extends Controller
         return view('users', compact('users'));
     }
 
-    public function updatePoints(Request $request, User $user)
+    public function update(Request $request, User $user)
     {
-    $validated = $request->validate([
-        'points' => 'required|integer|min:0',
-        'spent_points' => 'required|integer|min:0',
-        'name' => 'required|string|max:255',
-        'role' => 'required|in:admin,alumno',
-        'profile_photo_url' => 'nullable|image|max:2048' // 2MB máximo
-    ]);
+        // dd($request);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'role' => 'required|in:admin,alumno',
+            'points' => 'required|integer|min:0',
+            'spent_points' => 'required|integer|min:0',
+        ]);
+        // dd($validated);
 
-    $user->points = $validated['points'];
-    $user->spent_points = $validated['spent_points'];
-    $user->name = $validated['name'];
-    $user->role = $validated['role'];
+        try {
+            $user->update($validated);
+            return redirect()->route('users')->with('success', 'Usuario actualizado exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('users')->with('error', 'Hubo un problema al actualizar el usuario.');
+        }
 
-    if ($request->hasFile('profile_photo_url')) {
-        $path = $request->file('profile_photo_url')->store('profile_photos', 'public');
-        $user->profile_photo_url = $path;
+        // dd($user);
+        // return redirect()->route('users')->with('success', 'Usuario actualizado exitosamente.');
     }
 
-    $user->save();
+    public function delete(User $user)
+    {
+        $user->delete();
 
-    return response()->json([
-        'success' => true,
-        'user' => $user
-    ]);
-}
-
+        return redirect()->route('users')->with('success', 'Usuario eliminado exitosamente.');
+    }
 }

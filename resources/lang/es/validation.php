@@ -1,6 +1,7 @@
 <?php
 return [
     'required' => 'El campo :attribute es obligatorio.',
+    'in' => 'El valor seleccionado para :attribute no es válido.',
     'unique' => 'El :attribute ya está registrado.',
     'confirmed' => 'La confirmación de :attribute no coincide.',
     'min' => [

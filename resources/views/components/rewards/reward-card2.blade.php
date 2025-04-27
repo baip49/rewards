@@ -1,13 +1,14 @@
 @props(['title', 'description', 'cost', 'stock', 'points'])
 
 @php
-    $id = Str::slug($title);
+   $id = Str::slug($title);
 @endphp
 
 <div class="bg-white dark:bg-white/10 border border-zinc-200 dark:border-white/10 p-6 rounded-xl space-y-6 shadow-lg">
    <div class="space-y-4">
       <div class="flex justify-between items-center">
-         <h2 class="text-xl font-semibold text-zinc-800 dark:text-white" id="rewardTitle-{{ $id }}">{{ $title }}</h2>
+         <h2 class="text-xl font-semibold text-zinc-800 dark:text-white" id="rewardTitle-{{ $id }}">
+            {{ $title }}</h2>
 
          <!-- Botón Editar -->
          <button class="edit-button px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 focus:outline-none"
@@ -16,7 +17,8 @@
          </button>
       </div>
 
-      <p class="text-sm text-zinc-600 dark:text-zinc-300" id="rewardDescription-{{ $id }}">{{ $description }}</p>
+      <p class="text-sm text-zinc-600 dark:text-zinc-300" id="rewardDescription-{{ $id }}">{{ $description }}
+      </p>
    </div>
 
    <div class="flex justify-between items-center">
@@ -38,7 +40,8 @@
 </div>
 
 <!-- Modal específico -->
-<div id="modal-{{ $id }}" class="modal hidden fixed inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.5)] z-50">
+<div id="modal-{{ $id }}"
+   class="modal hidden fixed inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.5)] z-50">
    <div class="bg-white p-6 rounded-lg space-y-6 w-11/12 max-w-lg shadow-xl" @click.stop>
       <h2 class="text-2xl font-bold text-gray-800">Editar {{ $title }}</h2>
       <form id="editForm-{{ $id }}">
@@ -99,7 +102,7 @@
       // Guardar cambios
       document.querySelectorAll('#editForm-{{ $id }}').forEach(form => {
          form.addEventListener('submit', (e) => {
-            e.preventDefault();  // Evitar recargar la página
+            e.preventDefault(); // Evitar recargar la página
 
             // Obtener los nuevos valores de los campos
             const newName = document.getElementById('rewardName-{{ $id }}').value;
@@ -108,9 +111,12 @@
 
             // Actualizar la interfaz con los nuevos valores
             document.getElementById('rewardTitle-{{ $id }}').textContent = newName;
-            document.getElementById('rewardDescription-{{ $id }}').textContent = "Descripción actualizada";  // Puedes actualizar con tu texto real
-            document.getElementById('rewardCost-{{ $id }}').textContent = newCost + ' ' + __('reward-card.points');
-            document.getElementById('rewardStock-{{ $id }}').textContent = newStock + ' ' + __('reward-card.stock');
+            document.getElementById('rewardDescription-{{ $id }}').textContent =
+               "Descripción actualizada"; // Puedes actualizar con tu texto real
+            document.getElementById('rewardCost-{{ $id }}').textContent = newCost + ' ' +
+               __('reward-card.points');
+            document.getElementById('rewardStock-{{ $id }}').textContent = newStock + ' ' +
+               __('reward-card.stock');
 
             // Cerrar el modal
             const modal = document.getElementById('modal-{{ $id }}');
