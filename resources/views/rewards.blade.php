@@ -15,15 +15,15 @@
 
             <div class="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 mb-6 mx-6">
                @foreach ($rewards as $reward)
-                  <x-rewards.reward-card
-                     :id="$reward->id"
-                     :title="$reward->title"
-                     :description="$reward->description"
-                     :cost="$reward->cost"
-                     :stock="$reward->stock"
-                     :points="auth()->user()->points"
-                  />
-               @endforeach
+               <x-rewards.reward-card 
+                  :id="$reward->id"
+                  :title="$reward->title"
+                  :description="$reward->description"
+                  :cost="$reward->cost"
+                  :stock="$reward->stock"
+                  :points="auth()->user()->points"
+               />
+            @endforeach
             </div>
          </div>
       </div>
