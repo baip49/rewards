@@ -2,13 +2,14 @@
 
 <div class="bg-white dark:bg-white/10 border border-zinc-200 dark:border-white/10 p-6 rounded-xl space-y-6 shadow-lg mb-3">
 
-    <!-- Botón Editar -->
+   @can('isAdmin', App\Models\User::class)
     <button 
         onclick="openEditModal({{ $id }})"
         class="edit-button px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 focus:outline-none"
     >
         Editar
     </button>
+    @endcan
 
     <flux:heading size="lg" id="rewardTitle-{{ $id }}">
         {{ $title }}
@@ -36,7 +37,7 @@
     </div>
 </div>
 
-<!-- Modal de edición (oculto por defecto) -->
+<!-- Modal de edición -->
 <dialog id="editModal-{{ $id }}" class="modal bg-white dark:bg-zinc-900 p-6 rounded-xl max-w-md w-full">
     <form method="POST" action="{{ route('rewards.update', $id) }}" class="space-y-4">
         @csrf
@@ -66,19 +67,32 @@
             <input id="modalStock-{{ $id }}" type="number" name="stock" class="w-full p-2 border rounded" required>
         </div>
 
-        <div class="flex justify-between gap-2 mt-4">
+        <div class="flex justify-between gap-2 mt-4 flex-wrap">
             <button type="button" onclick="document.getElementById('editModal-{{ $id }}').close()" class="px-3 py-1 bg-gray-400 rounded">Cancelar</button>
             <button type="submit" class="px-3 py-1 bg-green-700 text-white rounded">Guardar</button>
-            <form method="POST" action="{{ route('rewards.destroy', $id) }}" onsubmit="return confirm('¿Estás seguro de eliminar este premio?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="px-3 py-1 bg-red-700 text-white rounded">Eliminar</button>
-            </form>
+
+            @can('isAdmin', Auth::user())
+            <button type="button" onclick="confirmDelete({{ $id }})" class="bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded">
+                Eliminar
+            </button>
+            @endcan
         </div>
+    </form>
+
+    <!-- Formulario para eliminación (fuera del form de edición) -->
+    <form id="deleteForm-{{ $id }}" method="POST" action="{{ route('rewards.destroy', $id) }}" class="hidden">
+        @csrf
+        @method('DELETE')
     </form>
 </dialog>
 
-<!-- Script de apertura del modal -->
+<!-- Toast -->
+<div id="toast" class="hidden fixed bottom-5 right-5 px-4 py-2 bg-green-700 text-white rounded-lg shadow-lg z-50 flex items-center gap-2">
+    <span id="toast-icon">✔️</span>
+    <p id="toast-message" class="m-0"></p>
+</div>
+
+<!-- Script -->
 <script>
     function openEditModal(id) {
         const modal = document.getElementById(`editModal-${id}`);
@@ -90,4 +104,30 @@
         document.getElementById(`modalStock-${id}`).value = stockMatch ? parseInt(stockMatch[0]) : 0;
         modal.showModal();
     }
+
+    function confirmDelete(id) {
+        if (confirm("¿Estás seguro de eliminar este premio?")) {
+            document.getElementById(`deleteForm-${id}`).submit();
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        const toastIcon = document.getElementById('toast-icon');
+
+        toastMessage.textContent = message;
+        toastIcon.textContent = type === 'success' ? '✔️' : '❌';
+
+        toast.classList.remove('hidden', 'bg-red-700', 'bg-green-700');
+        toast.classList.add(type === 'success' ? 'bg-green-700' : 'bg-red-700');
+
+        setTimeout(() => { toast.classList.add('hidden'); }, 4000);
+    }
+
+    @if(session('success'))
+        showToast("{{ session('success') }}", 'success');
+    @elseif(session('error'))
+        showToast("{{ session('error') }}", 'error');
+    @endif
 </script>

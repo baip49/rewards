@@ -7,6 +7,39 @@ use App\Models\Reward;
 
 class RewardController extends Controller
 {
+        public function showRewards()
+    {
+        $rewards = Reward::all();
+        return view('rewards', compact('rewards'));
+    }
+
+    public function redeem(Reward $reward)
+    {
+        $user = auth()->user();
+    
+        if ($reward->stock <= 0) {
+            return redirect()->back()->with('error', 'Este premio está agotado.');
+        }
+    
+        if ($user->points < $reward->cost) {
+            return redirect()->back()->with('error', 'No tienes suficientes puntos.');
+        }
+    
+        $user->points -= $reward->cost;
+        $user->spent_points += $reward->cost;
+        $user->save();
+    
+        auth()->setUser($user);
+    
+        $reward->stock -= 1;
+        $reward->save();
+    
+        return redirect()->back()->with('success', 'Premio canjeado con éxito.');
+    }
+    
+
+
+    // Apartado Admin//
     public function index()
     {
         $rewards = Reward::all();
