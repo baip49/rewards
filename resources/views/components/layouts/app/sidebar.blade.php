@@ -14,7 +14,7 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('sidebar.platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('sidebar.dashboard') }}</flux:navlist.item>
-                    <flux:navlist.item icon="gift" :href="route('rewards.user')" :current="request()->routeIs('rewards')" wire:navigate>{{ __('sidebar.rewards') }}</flux:navlist.item>
+                    <flux:navlist.item icon="gift" :href="route('rewards.user')" :current="request()->routeIs('rewards.user')" wire:navigate>{{ __('sidebar.rewards') }}</flux:navlist.item>
                     <flux:navlist.item icon="circle-stack" :href="route('progress')" :current="request()->routeIs('progress')" wire:navigate>{{ __('sidebar.progress') }}</flux:navlist.item>
                 </flux:navlist.group>
                 @can('isAdmin', App\Models\User::class)

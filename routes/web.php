@@ -13,8 +13,9 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
-    Route::view('rewards', 'rewards')->name('rewards');
     Route::view('progress', 'progress')->name('progress');
+    Route::get('/rewards', [RewardController::class, 'showRewards'])->name('rewards.user');
+    Route::post('/rewards/redeem/{reward}', [RewardController::class, 'redeem'])->name('rewards.redeem');
 });
 
 Route::middleware(['auth', @'can:isAdmin,App\Models\User'])->group(function () {
@@ -22,8 +23,7 @@ Route::middleware(['auth', @'can:isAdmin,App\Models\User'])->group(function () {
     Route::put('users/update/{user}', [UserController::class, 'update'])->name('users.update');
     Route::post('users/delete/{user}', [UserController::class, 'update'])->name('users.delete');
     //Usuario//
-    Route::get('/rewards', [RewardController::class, 'showRewards'])->name('rewards.user');
-    Route::post('/rewards/redeem/{reward}', [RewardController::class, 'redeem'])->name('rewards.redeem');
+
     //Admin//
     Route::get('/rewards/admin', [RewardController::class, 'index'])->name('rewards.admin');
     Route::post('/rewards', [RewardController::class, 'store'])->name('rewards.store');
