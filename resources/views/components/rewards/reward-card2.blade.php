@@ -1,127 +1,93 @@
-@props(['title', 'description', 'cost', 'stock', 'points'])
+@props(['id', 'title', 'description', 'cost', 'stock', 'points'])
 
-@php
-   $id = Str::slug($title);
-@endphp
+<div class="bg-white dark:bg-white/10 border border-zinc-200 dark:border-white/10 p-6 rounded-xl space-y-6 shadow-lg mb-3">
 
-<div class="bg-white dark:bg-white/10 border border-zinc-200 dark:border-white/10 p-6 rounded-xl space-y-6 shadow-lg">
-   <div class="space-y-4">
-      <div class="flex justify-between items-center">
-         <h2 class="text-xl font-semibold text-zinc-800 dark:text-white" id="rewardTitle-{{ $id }}">
-            {{ $title }}</h2>
+    <!-- Botón Editar -->
+    <button 
+        onclick="openEditModal({{ $id }})"
+        class="edit-button px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 focus:outline-none"
+    >
+        Editar
+    </button>
 
-         <!-- Botón Editar -->
-         <button class="edit-button px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 focus:outline-none"
-            data-modal-id="modal-{{ $id }}">
-            Editar
-         </button>
-      </div>
+    <flux:heading size="lg" id="rewardTitle-{{ $id }}">
+        {{ $title }}
+    </flux:heading>
 
-      <p class="text-sm text-zinc-600 dark:text-zinc-300" id="rewardDescription-{{ $id }}">{{ $description }}
-      </p>
-   </div>
+    <p class="text-sm text-zinc-600 dark:text-zinc-300" id="rewardDescription-{{ $id }}">
+        {{ $description }}
+    </p>
 
-   <div class="flex justify-between items-center">
-      <div class="flex flex-row text-green-600 dark:text-green-400">
-         <flux:icon.trophy class="me-1" />
-         <span class="text-lg font-bold" id="rewardCost-{{ $id }}">
-            {{ $cost . ' ' . __('reward-card.points') }}
-         </span>
-      </div>
-      <span class="text-sm text-zinc-500 dark:text-zinc-400" id="rewardStock-{{ $id }}">
-         {{ $stock > 0 ? $stock . ' ' . __('reward-card.stock') : __('reward-card.out_of_stock') }}
-      </span>
-   </div>
+    <div class="flex justify-between items-center">
+        <div class="flex flex-row text-green-600 dark:text-green-400">
+            <flux:icon.trophy class="me-1" />
+            <span class="text-lg font-bold" id="rewardCost-{{ $id }}">
+                {{ $cost . ' ' . __('reward-card.points') }}
+            </span>
+        </div>
+        <span class="text-sm text-zinc-500 dark:text-zinc-400" id="rewardStock-{{ $id }}">
+            {{ $stock > 0 ? $stock . ' ' . __('reward-card.stock') : __('reward-card.out_of_stock') }}
+        </span>
+    </div>
 
-   <flux:text>Progreso</flux:text>
-   <div class="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700">
-      <div class="bg-blue-600 h-4 rounded-full" style="width: {{ min(($points / $cost) * 100, 100) }}%;"></div>
-   </div>
+    <flux:text>Progreso</flux:text>
+    <div class="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700">
+        <div class="bg-blue-600 h-4 rounded-full" style="width: {{ min(($points / $cost) * 100, 100) }}%;"></div>
+    </div>
 </div>
 
-<!-- Modal específico -->
-<div id="modal-{{ $id }}"
-   class="modal hidden fixed inset-0 flex items-center justify-center bg-[rgba(0,0,0,0.5)] z-50">
-   <div class="bg-white p-6 rounded-lg space-y-6 w-11/12 max-w-lg shadow-xl" @click.stop>
-      <h2 class="text-2xl font-bold text-gray-800">Editar {{ $title }}</h2>
-      <form id="editForm-{{ $id }}">
-         <!-- Nombre -->
-         <label class="block text-sm font-medium text-gray-600">Nombre del premio</label>
-         <input type="text" id="rewardName-{{ $id }}" value="{{ $title }}"
-            class="border p-3 w-full rounded-lg mb-4 text-black bg-white" />
+<!-- Modal de edición (oculto por defecto) -->
+<dialog id="editModal-{{ $id }}" class="modal bg-white dark:bg-zinc-900 p-6 rounded-xl max-w-md w-full">
+    <form method="POST" action="{{ route('rewards.update', $id) }}" class="space-y-4">
+        @csrf
+        @method('PUT')
 
-         <!-- Stock -->
-         <label class="block text-sm font-medium text-gray-600">Stock</label>
-         <input type="number" id="rewardStock-{{ $id }}" value="{{ $stock }}"
-            class="border p-3 w-full rounded-lg mb-4 text-black bg-white" />
+        <h2 class="text-xl font-semibold mb-2">Editar Premio</h2>
 
-         <!-- Puntos necesarios -->
-         <label class="block text-sm font-medium text-gray-600">Puntos necesarios</label>
-         <input type="number" id="rewardCost-{{ $id }}" value="{{ $cost }}"
-            class="border p-3 w-full rounded-lg mb-4 text-black bg-white" />
+        <input type="hidden" name="id" value="{{ $id }}">
 
-         <!-- Botones -->
-         <div class="flex justify-end gap-3">
-            <button type="button"
-               class="close-modal bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg shadow"
-               data-modal-id="modal-{{ $id }}">Cancelar</button>
-            <button type="submit"
-               class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow">Guardar</button>
-         </div>
-      </form>
-   </div>
-</div>
+        <div>
+            <label for="title-{{ $id }}">Título</label>
+            <input id="modalTitle-{{ $id }}" type="text" name="title" class="w-full p-2 border rounded" required>
+        </div>
 
-<!-- Script -->
+        <div>
+            <label for="description-{{ $id }}">Descripción</label>
+            <textarea id="modalDescription-{{ $id }}" name="description" class="w-full p-2 border rounded" required></textarea>
+        </div>
+
+        <div>
+            <label for="cost-{{ $id }}">Costo</label>
+            <input id="modalCost-{{ $id }}" type="number" name="cost" class="w-full p-2 border rounded" required>
+        </div>
+
+        <div>
+            <label for="stock-{{ $id }}">Stock</label>
+            <input id="modalStock-{{ $id }}" type="number" name="stock" class="w-full p-2 border rounded" required>
+        </div>
+
+        <div class="flex justify-between gap-2 mt-4">
+            <button type="button" onclick="document.getElementById('editModal-{{ $id }}').close()" class="px-3 py-1 bg-gray-400 rounded">Cancelar</button>
+            <button type="submit" class="px-3 py-1 bg-green-700 text-white rounded">Guardar</button>
+            <form method="POST" action="{{ route('rewards.destroy', $id) }}" onsubmit="return confirm('¿Estás seguro de eliminar este premio?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="px-3 py-1 bg-red-700 text-white rounded">Eliminar</button>
+            </form>
+        </div>
+    </form>
+</dialog>
+
+<!-- Script de apertura del modal -->
 <script>
-   document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.edit-button').forEach(button => {
-         button.addEventListener('click', () => {
-            const modalId = button.getAttribute('data-modal-id');
-            const modal = document.getElementById(modalId);
-            if (modal) modal.classList.remove('hidden');
-         });
-      });
-
-      document.querySelectorAll('.close-modal').forEach(button => {
-         button.addEventListener('click', () => {
-            const modalId = button.getAttribute('data-modal-id');
-            const modal = document.getElementById(modalId);
-            if (modal) modal.classList.add('hidden');
-         });
-      });
-
-      document.querySelectorAll('.modal').forEach(modal => {
-         modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-               modal.classList.add('hidden');
-            }
-         });
-      });
-
-      // Guardar cambios
-      document.querySelectorAll('#editForm-{{ $id }}').forEach(form => {
-         form.addEventListener('submit', (e) => {
-            e.preventDefault(); // Evitar recargar la página
-
-            // Obtener los nuevos valores de los campos
-            const newName = document.getElementById('rewardName-{{ $id }}').value;
-            const newStock = document.getElementById('rewardStock-{{ $id }}').value;
-            const newCost = document.getElementById('rewardCost-{{ $id }}').value;
-
-            // Actualizar la interfaz con los nuevos valores
-            document.getElementById('rewardTitle-{{ $id }}').textContent = newName;
-            document.getElementById('rewardDescription-{{ $id }}').textContent =
-               "Descripción actualizada"; // Puedes actualizar con tu texto real
-            document.getElementById('rewardCost-{{ $id }}').textContent = newCost + ' ' +
-               __('reward-card.points');
-            document.getElementById('rewardStock-{{ $id }}').textContent = newStock + ' ' +
-               __('reward-card.stock');
-
-            // Cerrar el modal
-            const modal = document.getElementById('modal-{{ $id }}');
-            if (modal) modal.classList.add('hidden');
-         });
-      });
-   });
+    function openEditModal(id) {
+        const modal = document.getElementById(`editModal-${id}`);
+        document.getElementById(`modalTitle-${id}`).value = document.getElementById(`rewardTitle-${id}`).innerText.trim();
+        document.getElementById(`modalDescription-${id}`).value = document.getElementById(`rewardDescription-${id}`).innerText.trim();
+        document.getElementById(`modalCost-${id}`).value = parseInt(document.getElementById(`rewardCost-${id}`).innerText);
+        const stockText = document.getElementById(`rewardStock-${id}`).innerText;
+        const stockMatch = stockText.match(/\d+/);
+        document.getElementById(`modalStock-${id}`).value = stockMatch ? parseInt(stockMatch[0]) : 0;
+        modal.showModal();
+    }
 </script>

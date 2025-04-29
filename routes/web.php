@@ -21,7 +21,10 @@ Route::middleware(['auth', 'can:isAdmin,App\Models\User'])->group(function () {
     Route::get('users', [UserController::class, 'index'])->name('users');
     Route::put('users/update/{user}', [UserController::class, 'update'])->name('users.update');
     Route::post('users/delete/{user}', [UserController::class, 'update'])->name('users.delete');
-    Route::view('rewadmin', 'rewadmin')->name('rewadmin');
+    Route::get('/rewards/admin', [RewardController::class, 'index'])->name('rewards.admin');
+    Route::post('/rewards', [RewardController::class, 'store'])->name('rewards.store');
+    Route::put('/rewards/{reward}', [RewardController::class, 'update'])->name('rewards.update');
+    Route::delete('/rewards/{reward}', [RewardController::class, 'destroy'])->name('rewards.destroy');
 });
 
 Route::middleware(['auth'])->group(function () {
