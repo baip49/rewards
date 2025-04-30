@@ -1,23 +1,25 @@
 @props(['id', 'title', 'description', 'cost', 'stock', 'points'])
 
-<div class="bg-white dark:bg-white/10 border border-zinc-200 dark:border-white/10 p-6 rounded-xl space-y-6 shadow-lg mb-3">
+<div class="bg-white dark:bg-white/10 border border-zinc-200 dark:border-white/10 p-6 rounded-xl space-y-6 shadow-lg">
+    <div class="space-y-4">
+        <div class="flex justify-between items-center">
+            <flux:heading size="lg" class="text-2xl!" id="rewardTitle-{{ $id }}">
+                {{ $title }}
+            </flux:heading>
 
-   @can('isAdmin', App\Models\User::class)
-    <button 
-        onclick="openEditModal({{ $id }})"
-        class="edit-button px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 focus:outline-none"
-    >
-        Editar
-    </button>
-    @endcan
-
-    <flux:heading size="lg" id="rewardTitle-{{ $id }}">
-        {{ $title }}
-    </flux:heading>
-
-    <p class="text-sm text-zinc-600 dark:text-zinc-300" id="rewardDescription-{{ $id }}">
-        {{ $description }}
-    </p>
+            @can('isAdmin', App\Models\User::class)
+                <button onclick="openEditModal({{ $id }})" class="px-4 py-2 bg-green-700 text-white rounded-lg
+                    hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 duration-100
+                    ease-in-out hover:shadow-xl cursor-pointer flex items-center gap-2">
+                    <flux:icon.pencil />
+                    {{ __('reward-card.edit') }}
+                </button>
+            @endcan
+        </div>
+        <p class="text-sm text-zinc-600 dark:text-zinc-300" id="rewardDescription-{{ $id }}">
+            {{ $description }}
+        </p>
+    </div>
 
     <div class="flex justify-between items-center">
         <div class="flex flex-row text-green-600 dark:text-green-400">
@@ -49,7 +51,8 @@
 
         <div>
             <label for="title-{{ $id }}">Título</label>
-            <input id="modalTitle-{{ $id }}" type="text" name="title" class="w-full p-2 border rounded" required>
+            <input id="modalTitle-{{ $id }}" type="text" name="title" class="w-full p-2 border rounded"
+                required>
         </div>
 
         <div>
@@ -59,35 +62,41 @@
 
         <div>
             <label for="cost-{{ $id }}">Costo</label>
-            <input id="modalCost-{{ $id }}" type="number" name="cost" class="w-full p-2 border rounded" required>
+            <input id="modalCost-{{ $id }}" type="number" name="cost" class="w-full p-2 border rounded"
+                required>
         </div>
 
         <div>
             <label for="stock-{{ $id }}">Stock</label>
-            <input id="modalStock-{{ $id }}" type="number" name="stock" class="w-full p-2 border rounded" required>
+            <input id="modalStock-{{ $id }}" type="number" name="stock" class="w-full p-2 border rounded"
+                required>
         </div>
 
         <div class="flex justify-between gap-2 mt-4 flex-wrap">
-            <button type="button" onclick="document.getElementById('editModal-{{ $id }}').close()" class="px-3 py-1 bg-gray-400 rounded">Cancelar</button>
+            <button type="button" onclick="document.getElementById('editModal-{{ $id }}').close()"
+                class="px-3 py-1 bg-gray-400 rounded">Cancelar</button>
             <button type="submit" class="px-3 py-1 bg-green-700 text-white rounded">Guardar</button>
 
             @can('isAdmin', Auth::user())
-            <button type="button" onclick="confirmDelete({{ $id }})" class="bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded">
-                Eliminar
-            </button>
+                <button type="button" onclick="confirmDelete({{ $id }})"
+                    class="bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded">
+                    Eliminar
+                </button>
             @endcan
         </div>
     </form>
 
     <!-- Formulario para eliminación (fuera del form de edición) -->
-    <form id="deleteForm-{{ $id }}" method="POST" action="{{ route('rewards.destroy', $id) }}" class="hidden">
+    <form id="deleteForm-{{ $id }}" method="POST" action="{{ route('rewards.destroy', $id) }}"
+        class="hidden">
         @csrf
         @method('DELETE')
     </form>
 </dialog>
 
 <!-- Toast -->
-<div id="toast" class="hidden fixed bottom-5 right-5 px-4 py-2 bg-green-700 text-white rounded-lg shadow-lg z-50 flex items-center gap-2">
+<div id="toast"
+    class="hidden fixed bottom-5 right-5 px-4 py-2 bg-green-700 text-white rounded-lg shadow-lg z-50 flex items-center gap-2">
     <span id="toast-icon">✔️</span>
     <p id="toast-message" class="m-0"></p>
 </div>
@@ -96,9 +105,12 @@
 <script>
     function openEditModal(id) {
         const modal = document.getElementById(`editModal-${id}`);
-        document.getElementById(`modalTitle-${id}`).value = document.getElementById(`rewardTitle-${id}`).innerText.trim();
-        document.getElementById(`modalDescription-${id}`).value = document.getElementById(`rewardDescription-${id}`).innerText.trim();
-        document.getElementById(`modalCost-${id}`).value = parseInt(document.getElementById(`rewardCost-${id}`).innerText);
+        document.getElementById(`modalTitle-${id}`).value = document.getElementById(`rewardTitle-${id}`).innerText
+            .trim();
+        document.getElementById(`modalDescription-${id}`).value = document.getElementById(`rewardDescription-${id}`)
+            .innerText.trim();
+        document.getElementById(`modalCost-${id}`).value = parseInt(document.getElementById(`rewardCost-${id}`)
+            .innerText);
         const stockText = document.getElementById(`rewardStock-${id}`).innerText;
         const stockMatch = stockText.match(/\d+/);
         document.getElementById(`modalStock-${id}`).value = stockMatch ? parseInt(stockMatch[0]) : 0;
@@ -122,12 +134,14 @@
         toast.classList.remove('hidden', 'bg-red-700', 'bg-green-700');
         toast.classList.add(type === 'success' ? 'bg-green-700' : 'bg-red-700');
 
-        setTimeout(() => { toast.classList.add('hidden'); }, 4000);
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 4000);
     }
 
-    @if(session('success'))
+    @if (session('success'))
         showToast("{{ session('success') }}", 'success');
-    @elseif(session('error'))
+    @elseif (session('error'))
         showToast("{{ session('error') }}", 'error');
     @endif
 </script>

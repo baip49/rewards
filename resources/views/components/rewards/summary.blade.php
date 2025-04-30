@@ -9,12 +9,12 @@
       </div>
 
       <div class="flex justify-between items-center">
-         <div class="flex-col justify-items-start text-start">
+         <div class="flex-col grid justify-items-start text-start">
             <flux:icon.trophy class="size-12" />
             <flux:heading size="xl">{{ $points }}</flux:heading>
             <flux:text>Puntos disponibles</flux:text>
          </div>
-         <div class="flex-col justify-items-end text-end">
+          <div class="flex-col grid justify-items-end text-end items-end">
             <flux:icon.shopping-bag class="size-12" />
             <flux:heading size="xl">{{ $spent_points }}</flux:heading>
             <flux:text>Puntos gastados</flux:text>

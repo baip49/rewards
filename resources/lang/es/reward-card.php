@@ -5,4 +5,5 @@ return [
     'redeem' => 'Canjear',
     'out_of_stock' => 'Agotado',
     'points' => 'Puntos',
+    'edit' => 'Editar',
 ];
