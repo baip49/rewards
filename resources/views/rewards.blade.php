@@ -21,6 +21,7 @@
                   :description="$reward->description"
                   :cost="$reward->cost"
                   :stock="$reward->stock"
+                  :image="$reward->image"
                   :points="auth()->user()->points"
                />
             @endforeach

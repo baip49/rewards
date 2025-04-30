@@ -26,9 +26,9 @@ class UserController extends Controller
 
         try {
             $user->update($validated);
-            return redirect()->route('users')->with('success', 'Usuario actualizado exitosamente.');
+            return redirect()->route('admin.users')->with('success', 'Usuario actualizado exitosamente.');
         } catch (\Exception $e) {
-            return redirect()->route('users')->with('error', 'Hubo un problema al actualizar el usuario.');
+            return redirect()->route('admin.users')->with('error', 'Hubo un problema al actualizar el usuario.');
         }
 
         // dd($user);
@@ -39,6 +39,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('users')->with('success', 'Usuario eliminado exitosamente.');
+        return redirect()->route('admin.users')->with('success', 'Usuario eliminado exitosamente.');
     }
 }

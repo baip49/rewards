@@ -9,5 +9,5 @@ class Reward extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'cost', 'stock', 'points'];
+    protected $fillable = ['title', 'description', 'cost', 'stock', 'image', 'points'];
 }

@@ -38,7 +38,7 @@
                                     <flux:icon.x-mark />
                                  </button>
                               </div>
-                              <form action="{{ route('users.update', $user->id) }}" method="post" class="space-y-3">
+                              <form action="{{ route('admin.users.update', $user->id) }}" method="post" class="space-y-3">
                                  @csrf
                                  @method('PUT')
                                  <flux:field>
