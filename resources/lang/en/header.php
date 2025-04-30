@@ -3,6 +3,6 @@ return [
     'dashboard' => 'Panel',
     'profile' => 'View my profile',
     'logout' => 'Log out',
-    'login' => 'Log in',
+    'login' => 'Login',
     'register' => 'Register',
 ];

@@ -6,9 +6,9 @@ return [
     You will receive emails with the latest updates from UNACH Rewards, including exclusive products
     from UNACH and partner brands.',
     // Login card
-    'login-title' => 'Log in',
+    'login-title' => 'Login',
     'login-desc' => 'If you are a UNACH student, log in with your institutional email',
-    'login-btn' => 'Log in',
+    'login-btn' => 'Login',
     'already-logged' => 'You are already logged in!',
     // Panel card
     'panel-title' => 'Dashboard',
@@ -17,5 +17,5 @@ return [
     // Points card
     'points-title' => 'Earn points',
     'points-desc' => 'Accumulate points and redeem them for UNACH merchandise, raffles, and much more',
-    'points-btn' => 'View my progress',
+    'points-btn' => 'View my progress',
 ];
