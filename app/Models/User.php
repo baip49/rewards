@@ -78,4 +78,9 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+    public function goalReward()
+{
+    return $this->belongsTo(Reward::class, 'goal_reward_id');
+}
+
 }

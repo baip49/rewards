@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RewardsController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProgressController;
 
 Route::get('/', function () {
     return view('index');
@@ -46,6 +47,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 });
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/progress', [ProgressController::class, 'index'])->name('progress');
+    Route::post('/set-goal-reward', [ProgressController::class, 'setGoalReward'])->name('goal-reward.set');
+});
+
+
 
 Route::fallback(function () {
     return redirect()->route('home');
