@@ -11,6 +11,7 @@ class RewardsController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', Reward::class);
         $rewards = Reward::all();
         return view('rewards', compact('rewards'));
     }
@@ -44,9 +45,33 @@ class RewardsController extends Controller
         return view('rewadmin', compact('rewards'));
     }
 
-    public function create() 
+    public function add(Request $request)
     {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:1000',
+            'cost' => 'required|integer|min:0',
+            'stock' => 'required|integer|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
 
+        try {
+            $reward = new Reward($validated);
+
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $content = file_get_contents($file->getRealPath());
+                $path = 'rewards/' . $file->getClientOriginalName();
+                Storage::disk('public')->put($path, $content);
+                $reward->image = $path;
+            }
+
+            $reward->save();
+
+            return redirect()->back()->with('success', __('reward-card.create_success'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', __('reward-card.create_failed') . ': ' . $e->getMessage());
+        }
     }
 
     public function update(Request $request, $id)

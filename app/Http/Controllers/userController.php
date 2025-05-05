@@ -7,14 +7,16 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(User $user)
     {
+        $this->authorize('viewAny', $user);
         $users = User::all();
         return view('users', compact('users'));
     }
 
     public function update(Request $request, User $user)
     {
+        $this->authorize('update', $user);
         // dd($request);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -35,10 +37,10 @@ class UserController extends Controller
         // return redirect()->route('users')->with('success', 'Usuario actualizado exitosamente.');
     }
 
-    public function delete(User $user)
-    {
-        $user->delete();
+    // public function delete(User $user)
+    // {
+    //     $user->delete();
 
-        return redirect()->route('admin.users')->with('success', 'Usuario eliminado exitosamente.');
-    }
+    //     return redirect()->route('admin.users')->with('success', 'Usuario eliminado exitosamente.');
+    // }
 }

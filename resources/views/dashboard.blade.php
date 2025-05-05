@@ -8,12 +8,13 @@
       <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
          <div
             class="flex h-full w-full items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-            <div class="text-center">
+            <div class="text-center flex flex-col items-center gap-2">
                <h1 class="text-4xl font-bold flex items-center">
-                  Bienvenido, {{ auth()->user()->name }}<flux:badge variant="solid"
-                     color="{{ $role === __('user.admin') ? 'red' : 'yellow' }}" class="ms-2" inset="bottom">
-                     {{ ucfirst($role) }}</flux:badge>
+                 Bienvenido, {{ auth()->user()->name }}
                </h1>
+               <flux:badge variant="solid" color="{{ $role === 'admin' ? 'red' : 'yellow' }}" class="inline-block">
+                 {{ __('users.' . $role) }}
+               </flux:badge>
             </div>
          </div>
       </div>

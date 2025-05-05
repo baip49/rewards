@@ -13,16 +13,26 @@ class ProgressController extends Controller
         return view('progress', compact('rewards'));
     }
 
-    public function setGoalReward(Request $request)
+    public function pin($id)
     {
-        $request->validate([
-            'reward_id' => 'required|exists:rewards,id',
-        ]);
-
+        // $reward es el ID recibido por la URL
         $user = Auth::user();
-        $user->goal_reward_id = $request->reward_id;
+        $user->goal_reward_id = $id;
         $user->save();
 
-        return redirect()->route('progress')->with('success', '¡Recompensa meta establecida!');
+        return redirect()->route('progress')->with('success', 'Recompensa establecida con éxito');
+    }
+
+    public function unpin($id)
+    {
+        $user = Auth::user();
+        if ($user->goal_reward_id != $id) {
+            return redirect()->back()->with('error', 'No puedes eliminar esta recompensa');
+        }
+
+        $user->goal_reward_id = null;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Recompensa removida con éxito');
     }
 }

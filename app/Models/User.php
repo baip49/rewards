@@ -62,25 +62,24 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the translated role.
+     * Get the translated role label.
      *
      * @return string
      */
-    public function getRoleAttribute($value): string
+    public function getRoleLabelAttribute(): string
     {
-        return $value === 'admin'
+        return $this->attributes['role'] === 'admin'
             ? __('user.admin')
             : __('user.student');
     }
-
 
     public function isAdmin()
     {
         return $this->role === 'admin';
     }
+    
     public function goalReward()
-{
-    return $this->belongsTo(Reward::class, 'goal_reward_id');
-}
-
+    {
+        return $this->belongsTo(Reward::class, 'goal_reward_id');
+    }
 }

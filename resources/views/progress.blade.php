@@ -1,89 +1,77 @@
 <x-layouts.app :title="__('dashboard.progress')">
-   <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-      <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
+   <div class="flex h-[calc(100vh-7vh)] w-full flex-1 flex-col gap-4 rounded-xl">
+      <div class="relative h-full flex-1 overflow-y-scroll rounded-xl border border-neutral-200 dark:border-neutral-700">
 
          {{-- Resumen de recompensas --}}
-         <x-rewards.summary 
-            name="{{ auth()->user()->name }}" 
-            role="{{ auth()->user()->role }}"
-            points="{{ auth()->user()->points }}" 
-            spent_points="{{ auth()->user()->spent_points }}" 
-         />
+         <x-rewards.summary name="{{ auth()->user()->name }}" role="{{ auth()->user()->role }}"
+            points="{{ auth()->user()->points }}" spent_points="{{ auth()->user()->spent_points }}" />
 
          <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-6">
-               <flux:heading size="xl">{{ __('progress.heading') }}</flux:heading>
-               <flux:text>{{ __('progress.text') }}</flux:text>
-            </div>
+            @if (auth()->user()->goalReward)
+               <div class="text-center mb-6">
+                  <flux:heading size="xl">{{ __('progress.heading') }}</flux:heading>
+                  <flux:text>{{ __('progress.text') }}</flux:text>
+               </div>
 
-            <div class="grid grid-cols-1 gap-5 mb-6 mx-6">
-               @if (auth()->user()->goalReward)
+               <div class="grid grid-cols-1 gap-5 mb-6 mx-6">
                   {{-- Recompensa meta actual --}}
-                  <x-rewards.reward-card
-                     id="{{ auth()->user()->goalReward->id }}"
+                  <x-rewards.reward-card id="{{ auth()->user()->goalReward->id }}"
                      title="{{ auth()->user()->goalReward->title }}"
                      description="{{ auth()->user()->goalReward->description }}"
-                     cost="{{ auth()->user()->goalReward->cost }}"
-                     stock="{{ auth()->user()->goalReward->stock }}"
-                     points="{{ auth()->user()->points }}"
-                  />
-               @else
-                  {{-- Mensaje cuando no hay recompensa meta --}}
-                  <div class="p-6 rounded-lg shadow-lg text-center bg-white dark:bg-neutral-800">
-                     <p class="text-xl mb-4 text-neutral-600 dark:text-neutral-300">
-                        Oops, al parecer aún no tienes una recompensa meta, selecciona una.
-                     </p>
-
-                     {{-- Lista de recompensas disponibles --}}
-                     <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-4">
-                        @foreach ($rewards as $reward)
-                           <div class="relative bg-white dark:bg-white/10 border border-zinc-200 dark:border-white/10 p-6 rounded-xl space-y-4 shadow-lg hover:shadow-xl transition">
-
-                              {{-- Botón para fijar recompensa --}}
-                              <button
-                                 onclick="fixReward({{ $reward->id }})"
-                                 class="absolute top-2 right-2 px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 duration-100 ease-in-out hover:shadow-xl cursor-pointer">
-                                 Fijar
-                              </button>
-
-                              {{-- Información de la recompensa --}}
-                              <flux:heading size="xl">
-                                 {{ $reward->title }}
-                                 <flux:text class="text-sm text-neutral-500 dark:text-neutral-300 block">
-                                    {{ __('Costo') . ': ' . $reward->cost . ' pts' }}
-                                 </flux:text>
-                              </flux:heading>
-
-                              <flux:text class="text-lg text-neutral-700 dark:text-neutral-200">
-                                 {{ $reward->description }}
-                              </flux:text>
-
-                              {{-- Formulario oculto para fijar recompensa --}}
-                              <form 
-                                 id="reward-{{ $reward->id }}" 
-                                 method="POST" 
-                                 action="{{ route('goal-reward.set') }}" 
-                                 class="hidden">
-                                 @csrf
-                                 <input type="hidden" name="reward_id" value="{{ $reward->id }}">
-                              </form>
-                           </div>
-                        @endforeach
-                     </div>
-                  </div>
-               @endif
+                     cost="{{ auth()->user()->goalReward->cost }}" stock="{{ auth()->user()->goalReward->stock }}"
+                     image="{{ auth()->user()->goalReward->image }}" points="{{ auth()->user()->points }}"
+                     type="unpin" />
+               </div>
+            @else
+               <div class="text-center mb-6">
+                  <flux:heading size="xl">{{ __('progress.heading') }}</flux:heading>
+                  <flux:text>{{ __('progress.text-noreward') }}</flux:text>
+               </div>
+               <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-5 mb-6 mx-6">
+                  @foreach ($rewards as $reward)
+                     <x-rewards.reward-card id="{{ $reward->id }}" title="{{ $reward->title }}"
+                        description="{{ $reward->description }}" cost="{{ $reward->cost }}"
+                        stock="{{ $reward->stock }}" image="{{ $reward->image }}"
+                        points="{{ auth()->user()->points }}" type="pin" />
+                  @endforeach
+               </div>
+            @endif
+            <div id="toast"
+               class="fixed bottom-15 right-15 px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 duration-100 ease-in-out hover:shadow-xl cursor-pointer flex items-center gap-2">
+               <span id="toast-icon"></span>
+               <p id="toast-message"></p>
             </div>
          </div>
       </div>
    </div>
-
-   {{-- Script para fijar recompensa --}}
-   <script>
-      function fixReward(id) {
-         const form = document.getElementById(`reward-${id}`);
-         if (form) {
-            form.submit();
-         }
-      }
-   </script>
+   </div>
 </x-layouts.app>
+
+<script>
+   function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toast-message');
+      const toastIcon = document.getElementById('toast-icon');
+
+      toastMessage.textContent = message;
+      toast.classList.remove('bg-green-700', 'bg-red-700');
+      toast.classList.add(type === 'success' ? 'bg-green-700' : 'bg-red-700');
+
+      toastIcon.innerHTML = type === 'success' ?
+         `<flux:icon.check-circle />` :
+         `<flux:icon.x-circle" />`;
+
+      setTimeout(() => {
+         toast.classList.add('show');
+      }, 500);
+      setTimeout(() => {
+         toast.classList.remove('show');
+      }, 5000);
+   }
+
+   @if (session('success'))
+      showToast("{{ session('success') }}", 'success');
+   @elseif (session('error'))
+      showToast("{{ session('error') }}", 'error');
+   @endif
+</script>

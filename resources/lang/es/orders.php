@@ -1,0 +1,20 @@
+<?php
+return [
+    'heading' => 'Pedidos',
+    'order' => 'Pedido #:id',
+    'reward_redeemed' => 'Recompensa canjeada',
+    'open' => 'Abrir',
+    'close' => 'Cerrar',
+    'opened' => 'Abierto',
+    'closed' => 'Cerrado',
+    'close_order' => 'Cerrar pedido',
+    'open_order' => 'Abrir pedido',
+    'cancel' => 'Cancelar',
+    'close_confirmation' => '¿Estás seguro de que deseas cerrar este pedido?',
+    'close_description' => 'Una vez cerrado, no podrás enviar más mensajes. Puedes abrirlo nuevamente si es necesario.',
+    'open_confirmation' => '¿Estás seguro de que deseas abrir este pedido?',
+    'open_description' => 'Una vez abierto, podrás enviar mensajes. Puedes cerrarlo nuevamente si es necesario.',
+    'type_message' => 'Escribe un mensaje aquí...',
+    'send' => 'Enviar',
+    'cannot_send_closed' => 'No puedes enviar mensajes a un pedido cerrado.',
+];
