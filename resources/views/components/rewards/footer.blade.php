@@ -10,7 +10,7 @@
          </a>
          <div class="justify-content-center text-center">
             <div class="col">
-               <a class="text-reset text-decoration-none fw-bold">Soporte</a>
+               <a class="text-reset text-decoration-none fw-bold">{{ __('footer.support') }}</a>
             </div>
             <div class="col flex-row">
                <ul class="nav list-unstyled">
@@ -26,9 +26,9 @@
          </div>
       </div>
       <ul class="nav justify-content-center">
-         <li class="nav-item"><a href="#" class="nav-link px-2 text-light">Política de privacidad</a>
+         <li class="nav-item"><a href="#" class="nav-link px-2 text-light">{{ __('footer.privacy_policy') }}</a>
          </li>
-         <li class="nav-item"><a href="#" class="nav-link px-2 text-light">Términos y condiciones</a>
+         <li class="nav-item"><a href="#" class="nav-link px-2 text-light">{{ __('footer.terms_of_service') }}</a>
          </li>
       </ul>
    </footer>
