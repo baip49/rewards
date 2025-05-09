@@ -62,7 +62,7 @@
                                     <option value="admin" @if ($user->isAdmin()) selected @endif>
                                        {{ __('users.admin') }}
                                     </option>
-                                    <option value="alumno" @if (!$user->isAdmin()) selected @endif>
+                                    <option value="student" @if (!$user->isAdmin()) selected @endif>
                                        {{ __('users.student') }}
                                     </option>
                                  </flux:select>

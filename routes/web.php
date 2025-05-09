@@ -9,6 +9,25 @@ use App\Http\Controllers\RewardsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProgressController;
 
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
+
+Route::get('/sitemap', function () {
+    $sitemap = Sitemap::create()
+        ->add(Url::create('/')->setPriority(1.0)->setChangeFrequency('daily'))
+        ->add(Url::create('/dashboard')->setPriority(0.8)->setChangeFrequency('weekly'))
+        ->add(Url::create('/rewards')->setPriority(0.9)->setChangeFrequency('daily'))
+        ->add(Url::create('/progress')->setPriority(0.6)->setChangeFrequency('monthly'))
+        ->add(Url::create('/orders')->setPriority(0.7)->setChangeFrequency('daily'))
+        ->add(Url::create('/settings/profile')->setPriority(0.5)->setChangeFrequency('monthly'))
+        ->add(Url::create('/settings/password')->setPriority(0.5)->setChangeFrequency('monthly'))
+        ->add(Url::create('/settings/appearance')->setPriority(0.5)->setChangeFrequency('monthly'));
+
+    $sitemap->writeToFile(public_path('sitemap.xml'));
+
+    return response()->file(public_path('sitemap.xml'));
+});
+
 Route::get('/', function () {
     return view('index');
 })->name('home');

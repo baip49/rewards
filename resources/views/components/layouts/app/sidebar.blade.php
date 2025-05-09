@@ -43,6 +43,12 @@
                 </flux:navlist.item>
             </flux:navlist> --}}
 
+            {{-- <flux:navlist variant="outline">
+                <flux:navlist.item icon="question-mark-circle"  wire:navigate>
+                    {{ __('sidebar.help') }}
+                </flux:navlist.item>
+            </flux:navlist> --}}
+
             <!-- Desktop User Menu -->
             <flux:dropdown position="bottom" align="start">
                 <flux:profile

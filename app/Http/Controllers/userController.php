@@ -20,7 +20,7 @@ class UserController extends Controller
         // dd($request);
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'role' => 'required|in:admin,alumno',
+            'role' => 'required|in:admin,student',
             'points' => 'required|integer|min:0',
             'spent_points' => 'required|integer|min:0',
         ]);
